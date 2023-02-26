@@ -3,6 +3,7 @@ package com.aurora.ctoip.controller;
 
 import cn.hutool.core.map.MapUtil;
 import com.aurora.ctoip.common.dto.PassDto;
+import com.aurora.ctoip.common.dto.UserInfoDto;
 import com.aurora.ctoip.common.lang.Result;
 import com.aurora.ctoip.entity.SysUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -45,13 +47,20 @@ public class SysUserController extends BaseController{
     public Result userInfo(Principal principal) {
         SysUser sysUser = sysUserService.getByUsername(principal.getName());
         return Result.success(MapUtil.builder()
-                .put("id", sysUser.getId())
                 .put("username", sysUser.getUsername())
                 .put("lastLogin", sysUser.getLastLogin())
                 .put("created", sysUser.getCreated())
                 .put("statu",sysUser.getStatu())
                 .map()
         );
+    }
+    @PostMapping("/updateInfo")
+    public Result updateUserInfo(@Validated @RequestBody UserInfoDto userInfoDto,Principal principal){
+        SysUser sysUser = sysUserService.getByUsername(principal.getName());
+        sysUser.setUsername(userInfoDto.getUsername());
+        sysUser.setLastLogin(LocalDateTime.now());
+        sysUserService.updateById(sysUser);
+        return Result.success(200,"更新成功","");
     }
 
 }

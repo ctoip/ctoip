@@ -19,7 +19,7 @@ import java.io.IOException;
 /**
  * @author:Aurora
  * @create: 2023-02-21 19:22
- * @Description: 登录失败处理器
+ * @Description: 登录成功处理器
  */
 @Component
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
