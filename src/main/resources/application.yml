@@ -1,0 +1,38 @@
+server:
+  port: 8081
+# DataSource Config
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.50.241:3306/ctoip_db?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    username: root
+    password: root
+#  security:
+#      user:
+#        name: user
+#        password: 111111
+  redis:
+    host: 192.168.50.241
+    port: 6379
+    username:
+    password:
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: -1ms
+        max-idle: 8
+        min-idle: 0
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/*.xml
+  type-aliases-package: com.aurora.ctoip.mapper
+  configuration:
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+logging:
+  level:
+    com.aurora.ctoip.mapper: DEBUG
+aurora:
+  jwt:
+    header: Authorization
+    expire: 604800
+    secret: d6wd91w61daw1d6a1wd9w9d9w2j4j3j4
+
