@@ -110,7 +110,7 @@
 			<artifactId>kaptcha</artifactId>
 			<version>0.0.9</version>
 		</dependency>
-		<!-- hutool工具类:Map生成工具-->
+		<!-- hutool工具类:Map生成工具,JSON转换器-->
 		<dependency>
 			<groupId>cn.hutool</groupId>
 			<artifactId>hutool-all</artifactId>
@@ -127,6 +127,16 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+
+		<!--业务需要的依赖-->
+		<!--反向域名解析依赖-->
+		<!-- https://mvnrepository.com/artifact/commons-net/commons-net -->
+		<dependency>
+			<groupId>commons-net</groupId>
+			<artifactId>commons-net</artifactId>
+			<version>3.9.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

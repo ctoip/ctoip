@@ -54,6 +54,7 @@ public class SysUserController extends BaseController{
                 .map()
         );
     }
+    //@RequestBody用于解析JSON字符串
     @PostMapping("/updateInfo")
     public Result updateUserInfo(@Validated @RequestBody UserInfoDto userInfoDto,Principal principal){
         SysUser sysUser = sysUserService.getByUsername(principal.getName());

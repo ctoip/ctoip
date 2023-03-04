@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * @author:Aurora
  * @create: 2023-02-26 17:20
- * @Description:
+ * @Description:解析JSON数据
  */
 @Data
 public class UserInfoDto implements Serializable {

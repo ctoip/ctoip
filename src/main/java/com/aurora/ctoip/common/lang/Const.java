@@ -7,4 +7,5 @@ package com.aurora.ctoip.common.lang;
  */
 public class Const {
     public final static String CAPTCHA_KEY = "captcha";
+    public final static String IPINFO_KEY = "ipinfo";
 }

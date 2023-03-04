@@ -69,7 +69,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			"/logout",
 			"/captcha",
 			"/favicon.ico",
-			"/test/**"
+			"/test/**",
+			"/IpTrace/**"
 	};
 
 	//设置SpringSecurity处理的内容

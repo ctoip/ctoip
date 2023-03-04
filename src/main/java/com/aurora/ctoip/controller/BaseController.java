@@ -3,10 +3,12 @@ package com.aurora.ctoip.controller;
 import cn.hutool.http.server.HttpServerRequest;
 import com.aurora.ctoip.service.SysUserService;
 import com.aurora.ctoip.util.RedisUtil;
+import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author:Aurora
@@ -16,6 +18,12 @@ import javax.servlet.http.HttpServletRequest;
 public class BaseController {
     @Resource
     HttpServletRequest request;
+
+    @Resource
+    HttpServletResponse response;
+
+    @Resource
+    RestTemplate restTemplate;
 
     @Resource
     RedisUtil redisUtil;

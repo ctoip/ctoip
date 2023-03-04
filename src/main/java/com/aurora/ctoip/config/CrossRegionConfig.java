@@ -11,11 +11,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 /**
  * @author:Aurora
  * @create: 2023-02-21 01:33
- * @Description: 跨域处理
+ * @Description: 响应跨域处理
+ * 前端配置请求头跨域, 后端配置响应头跨域
  */
 @Configuration
 public class CrossRegionConfig implements WebMvcConfigurer {
 
+
+    //CorsFilter实现全局跨域配置
     private CorsConfiguration buildConfig() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.addAllowedOrigin("*");
@@ -24,7 +27,6 @@ public class CrossRegionConfig implements WebMvcConfigurer {
         corsConfiguration.addExposedHeader("Authorization");
         return corsConfiguration;
     }
-
     @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -32,11 +34,11 @@ public class CrossRegionConfig implements WebMvcConfigurer {
         return new CorsFilter(source);
     }
 
+    //重写addCorsMappings实现全局跨域
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins("*")
-//          .allowCredentials(true)
                 .allowedMethods("GET", "POST", "DELETE", "PUT")
                 .maxAge(3600);
     }
