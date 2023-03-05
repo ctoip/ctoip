@@ -6,10 +6,7 @@ import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Component
@@ -422,6 +419,18 @@ public class RedisUtil {
     }
 
     /**
+     * 获取单个元素的值
+     * @param stackKey
+     * @param key
+     * @return
+     */
+    public String lGet(String stackKey, String key) {
+        List<String> range = redisTemplate.opsForList().range(stackKey, 0, -1);
+        Optional<String> first = range.stream().filter(element -> element.contains(key)).findFirst();
+        return first.orElse("");
+    }
+
+    /**
      * 获取list缓存的长度
      *
      * @param key 键
@@ -451,9 +460,9 @@ public class RedisUtil {
             return null;
         }
     }
-
+//============================堆栈
     /**
-     * 将list放入缓存
+     * 不用List的push
      *
      * @param key   键
      * @param value 值
@@ -489,7 +498,7 @@ public class RedisUtil {
     }
 
     /**
-     * 将list放入缓存
+     * 将list放入缓存 使用LIST
      *
      * @param key   键
      * @param value 值
@@ -543,20 +552,43 @@ public class RedisUtil {
     }
 
     /**
-     * 移除N个值为value
+     * 删除List的某一项,根据ip
      *
-     * @param key   键
-     * @param count 移除多少个
+     * @param stackKey   键
      * @param value 值
      * @return 移除的个数
      */
-    public long lRemove(String key, long count, Object value) {
-        try {
-            Long remove = redisTemplate.opsForList().remove(key, count, value);
-            return remove;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return 0;
+    public boolean lRemoveFromList(String stackKey,String value) {
+        List<String> range = redisTemplate.opsForList().range(stackKey, 0, -1);
+        range.removeIf(item -> item.contains(value));
+        redisTemplate.delete(stackKey);
+        redisTemplate.opsForList().rightPushAll(stackKey, range);
+        return true;
+    }
+
+    /**
+     * 删除堆栈
+     * @param stackKey
+     * @return
+     */
+    public boolean lRemoveList(String stackKey) {
+        return redisTemplate.delete(stackKey);
+    }
+
+    /**
+     * 判断是否存在堆栈,以及判断是否存在某个项
+     * @param stackKey
+     * @param ListValue
+     * @return
+     */
+    public Boolean lHasKey(String stackKey, String ListValue){
+        if (redisTemplate.opsForList().size(stackKey)>0){
+            //拿到堆栈,遍历元素
+            List<String> range = redisTemplate.opsForList().range(stackKey, 0, -1);
+            return range.stream().anyMatch(s -> s.contains(ListValue));
+        }
+        else {
+            return false;
         }
     }
 

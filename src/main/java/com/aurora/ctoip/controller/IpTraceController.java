@@ -1,14 +1,13 @@
 package com.aurora.ctoip.controller;
 
-import cn.hutool.json.JSON;
 import com.aurora.ctoip.common.dto.iptrace.IpInfoDto;
 import com.aurora.ctoip.common.lang.Const;
 import com.aurora.ctoip.common.lang.Result;
-import com.aurora.ctoip.util.RedisUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.Data;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,8 +18,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
@@ -36,22 +36,22 @@ public class IpTraceController extends BaseController {
     @Resource
     ObjectMapper objectMapper;
 
-
     @GetMapping("/getIpInfo")
     public Result getIpInfo(String ipaddress) throws IOException {
         String jsonIpInfo = "";
-        if(!redisUtil.hHasKey(Const.IPINFO_KEY,ipaddress)) {
+        if(!redisUtil.lHasKey(Const.IPINFO_KEY, ipaddress)) {
             jsonIpInfo = objectMapper.writeValueAsString(this.getIpInfoFromAPI(ipaddress));
+            jsonIpInfo = Pattern.compile("\\s{5,}").matcher(jsonIpInfo).replaceAll("");
             //存入redis
-            redisUtil.hset(Const.IPINFO_KEY, ipaddress,jsonIpInfo);
+            redisUtil.lSet(Const.IPINFO_KEY,jsonIpInfo);
         }
         else{
             //从redis拿到数据
-            jsonIpInfo = (String) redisUtil.hget(Const.IPINFO_KEY, ipaddress);
+            jsonIpInfo = redisUtil.lGet(Const.IPINFO_KEY, ipaddress);
             //IpInfoDto ipInfoDto = objectMapper.readValue(jsonIpInfo, IpInfoDto.class);
         }
         //最终处理数据
-        return Result.success(Pattern.compile("\\s{5,}").matcher(jsonIpInfo).replaceAll(""));
+        return Result.success(jsonIpInfo);
     }
     public IpInfoDto getIpInfoFromAPI (String ipaddress) throws IOException {
         //微步查询IP信誉
@@ -98,18 +98,48 @@ public class IpTraceController extends BaseController {
                 String pattern2 = "^OrgId.*";
                 String pattern3 = "^Address.*";
                 if (Pattern.matches(pattern1, line)) {
-                    ipInfoDto.getAsn().setOrgName(line.trim());
+                    ipInfoDto.getAsn().setOrgName(Pattern.compile("OrgName:").matcher(line).replaceAll(""));
                 }
                 if (Pattern.matches(pattern2, line)) {
-                    ipInfoDto.getAsn().setOrgId(line.trim());
+                    ipInfoDto.getAsn().setOrgId(Pattern.compile("OrgId:").matcher(line).replaceAll(""));
                 }
                 if (Pattern.matches(pattern3, line)) {
-                    ipInfoDto.getAsn().setAddress(line.trim());
+                    ipInfoDto.getAsn().setAddress(Pattern.compile("Address:").matcher(line).replaceAll(""));
                     break;
                 }
             }
             //System.out.println(ipInfoDto.toString());
         }
         return ipInfoDto;
+    }
+
+    //返回redis中所有的ip
+    @GetMapping("/getIpInfoList")
+    public Result getIpInfoList() throws JsonProcessingException {
+        List<Object> objects = redisUtil.lGet(Const.IPINFO_KEY, 0, -1);
+        List<ObjectNode> objectNodeList = new ArrayList<>();
+        //将字符串转化为List<ObjectNode>,里面存储的是JsonNode对象
+        objects.forEach((value)->{
+            try {
+                ObjectNode objectNode = objectMapper.readValue(value.toString(), ObjectNode.class);
+                objectNodeList.add(objectNode);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        //生成一个JSON数组,遍历添加数据
+        ArrayNode arrayNodeList = objectMapper.createArrayNode();
+        objectNodeList.forEach(arrayNodeList::add);
+        String jsonArrayString = objectMapper.writeValueAsString(arrayNodeList);
+        return Result.success(jsonArrayString);
+    }
+
+    //删除
+    @GetMapping("/delIpInfo")
+    public Result delIpInfo(String ipaddress){
+        if (redisUtil.lHasKey(Const.IPINFO_KEY, ipaddress)){
+            redisUtil.lRemoveFromList(Const.IPINFO_KEY,ipaddress);
+        }
+        return Result.success("");
     }
 }

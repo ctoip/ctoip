@@ -1,5 +1,6 @@
 package com.aurora.ctoip.controller;
 
+import cn.hutool.Hutool;
 import cn.hutool.http.server.HttpServerRequest;
 import com.aurora.ctoip.service.SysUserService;
 import com.aurora.ctoip.util.RedisUtil;
@@ -30,5 +31,6 @@ public class BaseController {
 
     @Resource
     SysUserService sysUserService;
+
 
 }
