@@ -1,5 +1,7 @@
 package com.aurora.ctoip.util;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
@@ -14,6 +16,9 @@ public class RedisUtil {
 
     @Autowired
     private RedisTemplate redisTemplate;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     /**
      * 指定缓存失效时间
@@ -564,6 +569,24 @@ public class RedisUtil {
         redisTemplate.delete(stackKey);
         redisTemplate.opsForList().rightPushAll(stackKey, range);
         return true;
+    }
+
+    /**
+     * 批量删除,传入List
+     * @param StackKey
+     * @param matchValues
+     */
+    public void lBatchRemoveFromList(String StackKey, List<String> matchValues) throws JsonProcessingException {
+        List<Object> stackList = redisTemplate.opsForList().range(StackKey, 0, -1);
+        for (Object value : stackList) {
+            String stringValue = value.toString();
+            for (String matchValue : matchValues) {
+                if (stringValue.contains(matchValue)) {
+                    lRemoveFromList(StackKey,matchValue);
+                    break;
+                }
+            }
+        }
     }
 
     /**

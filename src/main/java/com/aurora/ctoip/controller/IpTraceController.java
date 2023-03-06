@@ -8,15 +8,14 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -139,6 +138,12 @@ public class IpTraceController extends BaseController {
         if (redisUtil.lHasKey(Const.IPINFO_KEY, ipaddress)){
             redisUtil.lRemoveFromList(Const.IPINFO_KEY,ipaddress);
         }
+        return Result.success("");
+    }
+    @PostMapping("/delIpInfoList")
+    public Result delIpInfoList(@RequestBody String ipaddress) throws JsonProcessingException {
+        List<String> list = objectMapper.readValue(ipaddress, List.class);
+        redisUtil.lBatchRemoveFromList(Const.IPINFO_KEY,list);
         return Result.success("");
     }
 }
