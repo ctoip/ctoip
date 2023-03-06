@@ -133,7 +133,6 @@ public class IpTraceController extends BaseController {
         String jsonArrayString = objectMapper.writeValueAsString(arrayNodeList);
         return Result.success(jsonArrayString);
     }
-
     //删除
     @GetMapping("/delIpInfo")
     public Result delIpInfo(String ipaddress){
