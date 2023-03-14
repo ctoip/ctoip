@@ -4,6 +4,8 @@ import cn.hutool.Hutool;
 import cn.hutool.http.server.HttpServerRequest;
 import com.aurora.ctoip.service.SysUserService;
 import com.aurora.ctoip.util.RedisUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
@@ -31,6 +33,9 @@ public class BaseController {
 
     @Resource
     SysUserService sysUserService;
+
+    @Resource
+    ObjectMapper objectMapper;
 
 
 }
