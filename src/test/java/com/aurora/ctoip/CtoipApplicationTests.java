@@ -136,7 +136,6 @@ class CtoipApplicationTests {
             Categories.getAndUpdate(s -> s + item.asText() + "/");
         });
         domainInfoDto.setCategories(Categories.toString());
-        domainInfoDto.setTags(jsonNode.get("data").get("attributes").get("tags").asText());
         domainInfoDto.setRegistrar(jsonNode.get("data").get("attributes").get("registrar").asText());
         domainInfoDto.setMalicious(jsonNode.get("data").get("attributes").get("last_analysis_stats").get("malicious").asText());
         domainInfoDto.setSuspicious(jsonNode.get("data").get("attributes").get("last_analysis_stats").get("suspicious").asText());
