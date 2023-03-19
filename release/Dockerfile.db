@@ -1,8 +1,0 @@
-FROM mysql:8.0.32
-MAINTAINER Aurora
-
-RUN curl -fL -o ctoip_db.sql https://github.com/Dew-OF-Aurora/ctoip/releases/download/jar/ctoip_db.sql \
-    && mv ctoip_db.sql /docker-entrypoint-initdb.d/
-
-EXPOSE 3306
-CMD ["mysqld","--init-file=/docker-entrypoint-initdb.d/ctoip_db.sql"]
