@@ -4,18 +4,18 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.50.241:3306/ctoip_db?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://${MYSQLIP}:3306/ctoip_db?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
     username: root
     password: root
-#  security:
-#      user:
-#        name: user
-#        password: 111111
+  #  security:
+  #      user:
+  #        name: user
+  #        password: 111111
   redis:
-    host: 192.168.50.241
+    host: ${REDISIP}
     port: 6379
-    username:
-    password:
+    username: root
+    password: root
     lettuce:
       pool:
         max-active: 8

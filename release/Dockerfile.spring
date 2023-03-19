@@ -1,13 +1,18 @@
 FROM ubuntu:22.04
 MAINTAINER Aurora
 
+WORKDIR /usr/local
+
 RUN sed -ri 's/archive.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list \
     && apt-get update \
     && apt-get install --no-install-recommends --no-install-suggests -y wget \
     && apt-get install --no-install-recommends --no-install-suggests -y openjdk-8-jdk \
     && apt-get install --no-install-recommends --no-install-suggests -y nmap \
+    && apt-get install --no-install-recommends --no-install-suggests -y gettext \
     && java -version \
-    && wget -O ctoip.jar https://github.com/Dew-OF-Aurora/ctoip/releases/download/jar/ctoip.jar
+    && wget -O ctoip.jar https://github.com/Dew-OF-Aurora/ctoip/releases/download/jar/ctoip.jar \
+    && wget -O tmlapplication.yml https://github.com/Dew-OF-Aurora/ctoip/releases/download/jar/application.yml \
+    && envsubst '${MYSQLIP},${REDISIP}' < tmlapplication.yml > application.yml
 
 EXPOSE 8081
-CMD ["java","-jar","ctoip.jar"]
+CMD ["java","-jar","ctoip.jar","--spring.config.location=/usr/local/"]
