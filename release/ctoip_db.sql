@@ -14,7 +14,7 @@
  Date: 19/03/2023 11:20:29
 */
 
-CREATE DATABASE ctoip_db;
+CREATE DATABASE IF NOT EXISTS `ctoip_db`;
 USE ctoip_db;
 
 SET NAMES utf8mb4;
