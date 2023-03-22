@@ -33,9 +33,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/captcha",
             "/favicon.ico",
             "/test/**",
-            "/IpTrace/**",
-            "/netTools/**",
-            "/DomainQuery/**"
     };
     @Autowired
     LoginFailureHandler loginFailureHandler;

@@ -21,7 +21,7 @@ import java.io.IOException;
  * @Description: 核心登录验证
  */
 @RestController
-public class AuthController extends BaseController{
+public class AuthController extends BaseController {
 
     @Resource
     Producer producer;
@@ -34,20 +34,20 @@ public class AuthController extends BaseController{
         //用于根据KaptchaConfig生成随机字符
         String code = producer.createText();
 
-        key = "aaaaa";
-        code = "11111";
+        //key = "aaaaa";
+        //code = "11111";
         BufferedImage image = producer.createImage(code);
         ByteArrayOutputStream out = new ByteArrayOutputStream();//get ByteImage
-        ImageIO.write(image,"png",out);
+        ImageIO.write(image, "png", out);
         BASE64Encoder encoder = new BASE64Encoder();
         String str = "data:image/png;base64,";//image header
         String base64img = str + encoder.encode(out.toByteArray());
-        redisUtil.hset(Const.CAPTCHA_KEY,key,code);
+        redisUtil.hset(Const.CAPTCHA_KEY, key, code);
         return Result.success(
                 MapUtil.builder()
                         //token指key
-                        .put("token",key)
-                        .put("base64img",base64img).build()
+                        .put("token", key)
+                        .put("base64img", base64img).build()
         );
     }
 }
