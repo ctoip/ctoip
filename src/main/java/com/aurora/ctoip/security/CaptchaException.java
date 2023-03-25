@@ -1,4 +1,4 @@
-package com.aurora.ctoip.common.exception;
+package com.aurora.ctoip.security;
 
 import org.springframework.security.core.AuthenticationException;
 

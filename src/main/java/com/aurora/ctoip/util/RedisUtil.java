@@ -22,6 +22,7 @@ public class RedisUtil {
 
     /**
      * 指定缓存失效时间
+     *
      * @param key  键
      * @param time 时间(秒)
      * @return
@@ -134,8 +135,8 @@ public class RedisUtil {
     /**
      * 递增
      *
-     * @param key 键
-     * @param delta  要增加几(大于0)
+     * @param key   键
+     * @param delta 要增加几(大于0)
      * @return
      */
     public long incr(String key, long delta) {
@@ -148,8 +149,8 @@ public class RedisUtil {
     /**
      * 递减
      *
-     * @param key 键
-     * @param delta  要减少几(小于0)
+     * @param key   键
+     * @param delta 要减少几(小于0)
      * @return
      */
     public long decr(String key, long delta) {
@@ -425,6 +426,7 @@ public class RedisUtil {
 
     /**
      * 获取单个元素的值
+     *
      * @param stackKey
      * @param key
      * @return
@@ -466,6 +468,7 @@ public class RedisUtil {
         }
     }
 //============================堆栈
+
     /**
      * 不用List的push
      *
@@ -559,11 +562,11 @@ public class RedisUtil {
     /**
      * 删除List的某一项,根据ip
      *
-     * @param stackKey   键
-     * @param value 值
+     * @param stackKey 键
+     * @param value    值
      * @return 移除的个数
      */
-    public boolean lRemoveFromList(String stackKey,String value) {
+    public boolean lRemoveFromList(String stackKey, String value) {
         List<String> range = redisTemplate.opsForList().range(stackKey, 0, -1);
         range.removeIf(item -> item.contains(value));
         redisTemplate.delete(stackKey);
@@ -573,6 +576,7 @@ public class RedisUtil {
 
     /**
      * 批量删除,传入List
+     *
      * @param StackKey
      * @param matchValues
      */
@@ -582,7 +586,7 @@ public class RedisUtil {
             String stringValue = value.toString();
             for (String matchValue : matchValues) {
                 if (stringValue.contains(matchValue)) {
-                    lRemoveFromList(StackKey,matchValue);
+                    lRemoveFromList(StackKey, matchValue);
                     break;
                 }
             }
@@ -591,6 +595,7 @@ public class RedisUtil {
 
     /**
      * 删除堆栈
+     *
      * @param stackKey
      * @return
      */
@@ -600,22 +605,23 @@ public class RedisUtil {
 
     /**
      * 判断是否存在堆栈,以及判断是否存在某个项
+     *
      * @param stackKey
      * @param ListValue
      * @return
      */
-    public Boolean lHasKey(String stackKey, String ListValue){
-        if (redisTemplate.opsForList().size(stackKey)>0){
+    public Boolean lHasKey(String stackKey, String ListValue) {
+        if (redisTemplate.opsForList().size(stackKey) > 0) {
             //拿到堆栈,遍历元素
             List<String> range = redisTemplate.opsForList().range(stackKey, 0, -1);
             return range.stream().anyMatch(s -> s.contains(ListValue));
-        }
-        else {
+        } else {
             return false;
         }
     }
 
     //================有序集合 sort set===================
+
     /**
      * 有序set添加元素
      *
@@ -642,15 +648,16 @@ public class RedisUtil {
 
     /**
      * 获取zset数量
+     *
      * @param key
      * @param value
      * @return
      */
     public long getZsetScore(String key, Object value) {
         Double score = redisTemplate.opsForZSet().score(key, value);
-        if(score==null){
+        if (score == null) {
             return 0;
-        }else{
+        } else {
             return score.longValue();
         }
     }
@@ -658,6 +665,7 @@ public class RedisUtil {
     /**
      * 获取有序集 key 中成员 member 的排名 。
      * 其中有序集成员按 score 值递减 (从大到小) 排序。
+     *
      * @param key
      * @param start
      * @param end
