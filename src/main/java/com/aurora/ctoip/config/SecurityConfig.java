@@ -1,10 +1,9 @@
 package com.aurora.ctoip.config;
 
-import com.aurora.ctoip.security.*;
-import com.aurora.ctoip.security.jwt.JwtAccessDeniedHandler;
-import com.aurora.ctoip.security.jwt.JwtAuthCoreFilter;
-import com.aurora.ctoip.security.jwt.JwtAuthEntryPoint;
-import com.aurora.ctoip.security.jwt.JwtLogoutSuccessHandler;
+import com.aurora.ctoip.security.ExceptionAccessDeniedHandler;
+import com.aurora.ctoip.security.FailureAuthEntryPoint;
+import com.aurora.ctoip.security.NomalAuthCoreFilter;
+import com.aurora.ctoip.security.login.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,9 +22,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  */
 @Configuration
 @EnableWebSecurity
+//权限验证注解
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
     //配置白名单
     private static final String[] URL_WHITELIST = {
             "/login",
@@ -41,11 +40,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     CaptchaFilter captchaFilter;
     @Autowired
-    JwtAuthEntryPoint jwtAuthEntryPoint;
+    FailureAuthEntryPoint failureAuthEntryPoint;
     @Autowired
-    JwtAccessDeniedHandler jwtAccessDeniedHandler;
+    ExceptionAccessDeniedHandler exceptionAccessDeniedHandler;
     @Autowired
-    JwtLogoutSuccessHandler jwtLogoutSuccessHandler;
+    LogoutSuccessHandler logoutSuccessHandler;
     @Autowired
     UserDetailsServiceImpl userDetailsService;
 
@@ -55,14 +54,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService);
     }
 
-    //使用核心权限处理器
+    //声明核心权限处理器
     @Bean
-    JwtAuthCoreFilter jwtAuthenticationFilter() throws Exception {
-        JwtAuthCoreFilter filter = new JwtAuthCoreFilter(authenticationManager());
+    NomalAuthCoreFilter nomalAuthenticationFilter() throws Exception {
+        NomalAuthCoreFilter filter = new NomalAuthCoreFilter(authenticationManager());
         return filter;
     }
 
-    //使用BC加密的密文
+    //用户密码加密方式
     @Bean
     BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
@@ -77,7 +76,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureHandler(loginFailureHandler)
                 .and()
                 .logout()
-                .logoutSuccessHandler(jwtLogoutSuccessHandler)
+                .logoutSuccessHandler(logoutSuccessHandler)
                 // 禁用session
                 .and()
                 .sessionManagement()
@@ -90,11 +89,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 异常处理器
                 .and()
                 .exceptionHandling()
-                .authenticationEntryPoint(jwtAuthEntryPoint)
-                .accessDeniedHandler(jwtAccessDeniedHandler)
+                .authenticationEntryPoint(failureAuthEntryPoint)
+                .accessDeniedHandler(exceptionAccessDeniedHandler)
                 // 配置自定义的过滤器
                 .and()
-                .addFilter(jwtAuthenticationFilter())
+                .addFilter(nomalAuthenticationFilter())
                 .addFilterBefore(captchaFilter, UsernamePasswordAuthenticationFilter.class)
         ;
     }

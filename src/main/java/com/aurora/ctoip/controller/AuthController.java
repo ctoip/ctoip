@@ -23,6 +23,7 @@ import java.io.IOException;
 @RestController
 public class AuthController extends BaseController {
 
+    //验证码插件
     @Resource
     Producer producer;
 
@@ -33,7 +34,6 @@ public class AuthController extends BaseController {
         String key = UUID.randomUUID().toString();
         //用于根据KaptchaConfig生成随机字符
         String code = producer.createText();
-
         //key = "aaaaa";
         //code = "11111";
         BufferedImage image = producer.createImage(code);

@@ -26,6 +26,8 @@ public class IpTraceController extends BaseController {
     @GetMapping("/getIpInfo")
     public Result getIpInfo(String ipaddress) throws IOException {
         String jsonIpInfo = "";
+        if (!ipaddress.matches("(25[0-5]|2[0-4]\\d|[0-1]\\d{2}|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|[0-1]\\d{2}|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|[0-1]\\d{2}|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|[0-1]\\d{2}|[1-9]?\\d)"))
+            return Result.fail("输入错误");
         if (!redisUtil.lHasKey(Const.IPINFO_KEY, ipaddress)) {
             jsonIpInfo = objectMapper.writeValueAsString(this.getIpInfoFromAPI(ipaddress));
             jsonIpInfo = Pattern.compile("\\s{5,}").matcher(jsonIpInfo).replaceAll("");

@@ -4,21 +4,18 @@ import cn.hutool.core.map.MapUtil;
 import com.aurora.ctoip.common.lang.Result;
 import com.aurora.ctoip.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.net.whois.WhoisClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
-import java.security.Principal;
 import java.util.Arrays;
-
-import org.apache.commons.net.whois.WhoisClient;
 
 /**
  * @author:Aurora
@@ -27,16 +24,17 @@ import org.apache.commons.net.whois.WhoisClient;
  */
 @Slf4j
 @RestController
-public class TestController extends BaseController{
+public class TestController extends BaseController {
     @Resource
     SysUserService sysUserService;
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @GetMapping("/test/selectUser")
-    public Result selectUser(){
+    public Result selectUser() {
         return Result.success(sysUserService.list());
     }
 
-    @Autowired
-    BCryptPasswordEncoder bCryptPasswordEncoder;
     @GetMapping("/test/pass")
     public Result passEncode() {
         // 密码加密
@@ -50,15 +48,16 @@ public class TestController extends BaseController{
                 .build()
         );
     }
+
     @GetMapping("/test/test1")
-    public Result paramResultTest(Integer num){
+    public Result paramResultTest(Integer num) {
         System.out.println(num);
         log.info(num.toString());
         return Result.success("成功");
     }
 
     @GetMapping("/test/test2")
-    public Result CrossRegionTest(){
+    public Result CrossRegionTest() {
         //微步查询IP信誉
         //String object = restTemplate.getForObject("https://api.threatbook.cn/v3/scene/ip_reputation?apikey=" +
         //                "5ea5eb7c777e432997a42a7dda717c2a1402def6763540f6b6a39a35f010b02a&resource=159.203.93.255&lang=zh"
@@ -81,6 +80,7 @@ public class TestController extends BaseController{
         }
         return Result.success("成功");
     }
+
     //https://ipapi.co/159.203.93.255/json/
     //域名详情
     @GetMapping("/test/test3")

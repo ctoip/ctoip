@@ -7,12 +7,12 @@ import org.springframework.web.client.RestTemplate;
 /**
  * @author:Aurora
  * @create: 2023-03-02 11:51
- * @Description:
+ * @Description: 注入HTTP客户端
  */
 @Configuration
 public class RestTemplateConfig {
     @Bean
-    RestTemplate restTemplate(){
+    RestTemplate restTemplate() {
         return new RestTemplate();
     }
 }

@@ -1,13 +1,12 @@
 package com.aurora.ctoip.entity;
 
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
 /**
- *
  * @author Aurora
  * @since 2023-02-20
  */
@@ -28,6 +27,5 @@ public class SysUser implements Serializable {
     private LocalDateTime lastLogin;
 
     private Integer statu;
-
 
 }

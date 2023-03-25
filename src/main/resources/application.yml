@@ -7,10 +7,6 @@ spring:
     url: jdbc:mysql://192.168.50.225:3306/ctoip_db?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
     username: root
     password: root
-  #  security:
-  #      user:
-  #        name: user
-  #        password: 111111
   redis:
     host: 192.168.50.225
     port: 6379

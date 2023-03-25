@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.regex.Pattern;
 
 /**
  * @author:Aurora
@@ -29,6 +28,8 @@ public class DomainQueryController extends BaseController {
     @GetMapping("/DomainInfo")
     public Result getDomainInfo(String domain) throws JsonProcessingException {
         String JsonData = "";
+        if (!domain.matches("[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+.?"))
+            return Result.fail("输入错误");
         if (!redisUtil.lHasKey(Const.DOMAININFO_KEY, domain)) {
             JsonData = objectMapper.writeValueAsString(this.getDomainInfoFromApi(domain));
             //存入redis

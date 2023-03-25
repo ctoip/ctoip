@@ -23,11 +23,9 @@ public class KaptchaConfig {
         properties.put("kaptcha.image.height", "40");
         properties.put("kaptcha.image.width", "100");
         properties.put("kaptcha.textproducer.font.size", "30");
-
         Config config = new Config(properties);
         DefaultKaptcha defaultKaptcha = new DefaultKaptcha();
         defaultKaptcha.setConfig(config);
-
         return defaultKaptcha;
     }
 }

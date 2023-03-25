@@ -4,12 +4,12 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.aurora.ctoip.entity.SysUser">
-        <id column="id" property="id" />
-        <result column="username" property="username" />
-        <result column="password" property="password" />
-        <result column="created" property="created" />
-        <result column="last_login" property="lastLogin" />
-        <result column="statu" property="statu" />
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="created" property="created"/>
+        <result column="last_login" property="lastLogin"/>
+        <result column="statu" property="statu"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->

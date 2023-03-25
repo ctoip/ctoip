@@ -1,15 +1,11 @@
 package com.aurora.ctoip.controller;
 
-import cn.hutool.Hutool;
-import cn.hutool.http.server.HttpServerRequest;
 import com.aurora.ctoip.service.SysUserService;
 import com.aurora.ctoip.util.RedisUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.http.HttpHeaders;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
