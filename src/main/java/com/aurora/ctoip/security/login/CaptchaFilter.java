@@ -1,7 +1,7 @@
-package com.aurora.ctoip.security;
+package com.aurora.ctoip.security.login;
 
-import com.aurora.ctoip.common.exception.CaptchaException;
 import com.aurora.ctoip.common.lang.Const;
+import com.aurora.ctoip.security.CaptchaException;
 import com.aurora.ctoip.util.RedisUtil;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +29,10 @@ public class CaptchaFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        //判断是否为登录请求
         String url = request.getRequestURI();
         if ("/login".equals(url) && request.getMethod().equals("POST")) {
-            try{
+            try {
                 // 校验验证码
                 validate(request);
             } catch (CaptchaException e) {
@@ -41,6 +42,7 @@ public class CaptchaFilter extends OncePerRequestFilter {
         }
         filterChain.doFilter(request, response);
     }
+
     // 校验验证码逻辑
     private void validate(HttpServletRequest httpServletRequest) {
         //验证码

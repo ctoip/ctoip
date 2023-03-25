@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * <p>
- *  服务类
+ * 服务类
  * </p>
  *
  * @author Aurora
@@ -15,4 +15,6 @@ public interface SysUserService extends IService<SysUser> {
     SysUser getByUsername(String username);
 
     String getUserAuthorityInfo(Integer userId);
+
+    void updateLastLogin(String username);
 }

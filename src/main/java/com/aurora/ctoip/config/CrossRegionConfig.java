@@ -16,9 +16,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 public class CrossRegionConfig implements WebMvcConfigurer {
-
-
-    //CorsFilter实现全局跨域配置
+    //构造跨域Config跨域配置
     private CorsConfiguration buildConfig() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.addAllowedOrigin("*");
@@ -27,6 +25,8 @@ public class CrossRegionConfig implements WebMvcConfigurer {
         corsConfiguration.addExposedHeader("Authorization");
         return corsConfiguration;
     }
+
+    //初始化跨域对象
     @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -42,5 +42,4 @@ public class CrossRegionConfig implements WebMvcConfigurer {
                 .allowedMethods("GET", "POST", "DELETE", "PUT")
                 .maxAge(3600);
     }
-
 }

@@ -1,15 +1,11 @@
-package com.aurora.ctoip.security;
+package com.aurora.ctoip.security.login;
 
 import cn.hutool.json.JSONUtil;
 import com.aurora.ctoip.common.lang.Result;
-import com.aurora.ctoip.util.JwtUtils;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -19,25 +15,18 @@ import java.io.IOException;
 /**
  * @author:Aurora
  * @create: 2023-02-21 19:22
- * @Description: 登录成功处理器
+ * @Description: 登录失败处理器, 给前端返回信息
  */
 @Component
-public class LoginSuccessHandler implements AuthenticationSuccessHandler {
-
-    @Resource
-    JwtUtils jwtUtils;
-
+public class LoginFailureHandler implements AuthenticationFailureHandler {
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         response.setContentType("application/json;charset=UTF-8");
         //resp流
         ServletOutputStream outputStream = response.getOutputStream();
-
-        //成功生成jwt,放到请求头中
-        String jwt = jwtUtils.generateToken(authentication.getName());
-        response.setHeader(jwtUtils.getHeader(),jwt);
-
-        Result result = Result.success(authentication.getName());
+        Result result = Result.fail(
+                "Bad credentials".equals(exception.getMessage()) ? "用户名或密码不正确" : exception.getMessage()
+        );
         outputStream.write(JSONUtil.toJsonStr(result).getBytes("UTF-8"));
         outputStream.flush();
         outputStream.close();
