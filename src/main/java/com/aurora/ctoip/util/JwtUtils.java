@@ -17,7 +17,17 @@ public class JwtUtils {
     private String secret;
     private String header;
 
-    // 生成jwt
+    /*
+    payLoad:
+    iss (issuer)：JWT的签发者
+    sub (subject)：JWT所面向的用户
+    aud (audience)：接收JWT的一方
+    exp (expiration time)：JWT的过期时间
+    nbf (not before)：JWT生效的开始时间
+    iat (issued at)：JWT的签发时间
+    jti (JWT ID)：JWT的唯一标识符
+    自定义字段：根据业务需求可以设置自定义字段来存放一些额外的信息，例如用户ID、角色等。
+     */
     public String generateToken(String username) {
         Date nowDate = new Date();
         Date expireDate = new Date(nowDate.getTime() + 1000 * expire);

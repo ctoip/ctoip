@@ -6,7 +6,7 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
-@ServletComponentScan
+@ServletComponentScan("com.aurora.ctoip.common.filter")
 @EnableTransactionManagement
 public class CtoipApplication {
     public static void main(String[] args) {
