@@ -50,4 +50,5 @@ public class AuthController extends BaseController {
                         .put("base64img", base64img).build()
         );
     }
+
 }

@@ -36,7 +36,8 @@ public class NomalAuthCoreFilter extends BasicAuthenticationFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-
+        
+        //拿到header: Authorization
         String jwt = request.getHeader(jwtUtils.getHeader());
         if (StrUtil.isBlankOrUndefined(jwt)) {
             chain.doFilter(request, response);
@@ -50,10 +51,7 @@ public class NomalAuthCoreFilter extends BasicAuthenticationFilter {
             throw new JwtException("token已过期");
         }
         String username = claim.getSubject();
-        // 获取用户的权限等信息
-        //SysUser sysUser = sysUserService.getByUsername(username);
-        //UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, null, userDetailService.getUserAuthority(sysUser.getId()));
-        //提交权限
+
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, null, null);
         SecurityContextHolder.getContext().setAuthentication(token);
 

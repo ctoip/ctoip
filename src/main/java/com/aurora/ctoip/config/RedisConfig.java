@@ -12,7 +12,6 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
  * @author:Aurora
  * @create: 2023-02-20 23:21
  * @Description: 把JSON数据转化为Redis支持的JSON数据
- * <p>
  * docker run -d -p 6379:6379 --name myredis --restart=always redis:7.08 redis-server --save 60 1 --loglevel warning
  */
 @Configuration

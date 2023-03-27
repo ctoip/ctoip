@@ -30,7 +30,6 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         response.setContentType("application/json;charset=UTF-8");
         //resp流
         ServletOutputStream outputStream = response.getOutputStream();
-
         //成功生成jwt,放到请求头中
         String jwt = jwtUtils.generateToken(authentication.getName());
         response.setHeader(jwtUtils.getHeader(), jwt);
