@@ -1,6 +1,5 @@
 server:
   port: 8081
-# DataSource Config
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -18,6 +17,10 @@ spring:
         max-wait: -1ms
         max-idle: 8
         min-idle: 0
+  #  security:
+  #      user:
+  #        name: user
+  #        password: 111111
 mybatis-plus:
   mapper-locations: classpath*:/mapper/*.xml
   type-aliases-package: com.aurora.ctoip.mapper
@@ -31,4 +34,7 @@ aurora:
     header: Authorization
     expire: 604800
     secret: d6wd91w61daw1d6a1wd9w9d9w2j4j3j4
+  apikey:
+    threatBookApiKey: 5ea5eb7c777e432997a42a7dda717c2a1402def6763540f6b6a39a35f010b02a
+    VTApiKey: e2a080bbf4ea756b8734bc8b9bc40cad03d16145f67f71bafe9c86d76e50ae3e
 
