@@ -9,7 +9,10 @@ import com.aurora.ctoip.entity.SysUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
@@ -38,7 +41,7 @@ public class SysUserController extends BaseController {
         return Result.success("");
     }
 
-    @GetMapping("/userInfo")
+    @PostMapping("/userInfo")
     public Result userInfo(Principal principal) {
         SysUser sysUser = sysUserService.getByUsername(principal.getName());
         return Result.success(MapUtil.builder()

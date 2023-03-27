@@ -1,7 +1,6 @@
 package com.aurora.ctoip.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
@@ -16,9 +15,6 @@ public class RedisUtil {
 
     @Autowired
     private RedisTemplate redisTemplate;
-
-    @Autowired
-    private ObjectMapper objectMapper;
 
     /**
      * 指定缓存失效时间
