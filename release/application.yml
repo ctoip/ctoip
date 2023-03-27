@@ -1,16 +1,11 @@
 server:
   port: 8081
-# DataSource Config
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://${MYSQLIP}:3306/ctoip_db?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
     username: root
     password: root
-  #  security:
-  #      user:
-  #        name: user
-  #        password: 111111
   redis:
     host: ${REDISIP}
     port: 6379
@@ -34,4 +29,7 @@ aurora:
     header: Authorization
     expire: 604800
     secret: d6wd91w61daw1d6a1wd9w9d9w2j4j3j4
+  apikey:
+    threatBookApiKey: 5ea5eb7c777e432997a42a7dda717c2a1402def6763540f6b6a39a35f010b02a
+    VTApiKey: e2a080bbf4ea756b8734bc8b9bc40cad03d16145f67f71bafe9c86d76e50ae3e
 

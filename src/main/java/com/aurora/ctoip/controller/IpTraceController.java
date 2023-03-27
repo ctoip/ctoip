@@ -45,7 +45,7 @@ public class IpTraceController extends BaseController {
     public IpInfoDto getIpInfoFromAPI(String ipaddress) throws IOException {
         //微步查询IP信誉
         String Json1 = restTemplate.getForObject("https://api.threatbook.cn/v3/scene/ip_reputation?" +
-                "apikey=5ea5eb7c777e432997a42a7dda717c2a1402def6763540f6b6a39a35f010b02a" +
+                "apikey=" + threatBookApiKey +
                 "&resource=" + ipaddress +
                 "&lang=zh", String.class);
         //读取节点
@@ -81,27 +81,6 @@ public class IpTraceController extends BaseController {
          */
         String asn = jsonNodeInJson1.get("data").get(ipaddress).get("basic").get("carrier").asText();
         ipInfoDto.setAsn(asn);
-        //try (Socket socket = new Socket("whois.arin.net", 43);
-        //     BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
-        //    socket.getOutputStream().write((ipaddress + "\r\n").getBytes()); // 发送查询请求
-        //    String line;
-        //    while ((line = reader.readLine()) != null) { // 读取响应
-        //        String pattern1 = "^OrgName.*";
-        //        String pattern2 = "^OrgId.*";
-        //        String pattern3 = "^Address.*";
-        //        if (Pattern.matches(pattern1, line)) {
-        //            ipInfoDto.getAsn().setOrgName(Pattern.compile("OrgName:").matcher(line).replaceAll(""));
-        //        }
-        //        if (Pattern.matches(pattern2, line)) {
-        //            ipInfoDto.getAsn().setOrgId(Pattern.compile("OrgId:").matcher(line).replaceAll(""));
-        //        }
-        //        if (Pattern.matches(pattern3, line)) {
-        //            ipInfoDto.getAsn().setAddress(Pattern.compile("Address:").matcher(line).replaceAll(""));
-        //            break;
-        //        }
-        //    }
-        //    System.out.println(ipInfoDto.toString());
-        //}
         return ipInfoDto;
     }
 

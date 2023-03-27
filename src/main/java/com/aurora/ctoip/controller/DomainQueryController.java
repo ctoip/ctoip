@@ -45,7 +45,7 @@ public class DomainQueryController extends BaseController {
     public DomainInfoDto getDomainInfoFromApi(String domain) throws JsonProcessingException {
         DomainInfoDto domainInfoDto = new DomainInfoDto();
         HttpHeaders headers = new HttpHeaders();
-        headers.set("x-apikey", "e2a080bbf4ea756b8734bc8b9bc40cad03d16145f67f71bafe9c86d76e50ae3e");
+        headers.set("x-apikey", VTApiKey);
         HttpEntity<String> entity = new HttpEntity<>("body", headers);
         ResponseEntity<String> response = restTemplate.exchange("https://www.virustotal.com/api/v3/domains/" + domain, HttpMethod.GET, entity, String.class);
         //先转化为JsonNode再转化为Dto对象
