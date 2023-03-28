@@ -20,7 +20,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 
 /**
- * 安全拦截处理
+ * @author Aurora
+ * @Description:核心配置
+ * @since 2023-02-21 01:33
  */
 @Configuration
 @EnableWebSecurity
