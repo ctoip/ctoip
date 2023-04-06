@@ -566,7 +566,9 @@ public class RedisUtil {
         List<String> range = redisTemplate.opsForList().range(stackKey, 0, -1);
         range.removeIf(item -> item.contains(value));
         redisTemplate.delete(stackKey);
-        redisTemplate.opsForList().rightPushAll(stackKey, range);
+        if (range.size() != 0) {
+            redisTemplate.opsForList().rightPushAll(stackKey, range);
+        }
         return true;
     }
 
@@ -576,7 +578,7 @@ public class RedisUtil {
      * @param StackKey
      * @param matchValues
      */
-    public void lBatchRemoveFromList(String StackKey, List<String> matchValues) throws JsonProcessingException {
+    public void lBatchRemoveFromList(String StackKey, List<String> matchValues) {
         List<Object> stackList = redisTemplate.opsForList().range(StackKey, 0, -1);
         for (Object value : stackList) {
             String stringValue = value.toString();
