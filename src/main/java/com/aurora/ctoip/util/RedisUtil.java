@@ -466,7 +466,7 @@ public class RedisUtil {
 //============================堆栈
 
     /**
-     * 不用List的push
+     * 单个元素的push
      *
      * @param key   键
      * @param value 值
