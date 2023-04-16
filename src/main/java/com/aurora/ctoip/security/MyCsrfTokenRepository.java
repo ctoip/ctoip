@@ -1,5 +1,6 @@
 package com.aurora.ctoip.security;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.DefaultCsrfToken;
@@ -76,7 +77,13 @@ public class MyCsrfTokenRepository implements CsrfTokenRepository {
         if (cookie == null) {
             return null;
         }
-        String token = cookie.getValue() + "233";
+        StringBuilder tmp = new StringBuilder();
+        tmp.append(cookie.getValue().charAt(3));
+        tmp.append(cookie.getValue().charAt(16));
+        tmp.append(cookie.getValue().charAt(29));
+        tmp.append(cookie.getValue().charAt(10));
+        String token = cookie.getValue() + "-" + DigestUtils.md5Hex(tmp.toString());
+
         if (!StringUtils.hasLength(token)) {
             return null;
         }
