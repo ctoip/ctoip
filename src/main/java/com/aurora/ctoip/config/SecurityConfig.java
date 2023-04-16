@@ -71,12 +71,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return filter;
     }
 
-    //手動配置CSRF
+    //使用自己配置的配置CSRF
     @Bean
     @ConditionalOnMissingBean
     public MyCsrfTokenRepository csrfTokenRepository() {
         MyCsrfTokenRepository repository = new MyCsrfTokenRepository();
-        //關閉Httponly
+        //关闭Httponly,让前端可以js访问cookie
         repository.setCookieHttpOnly(false);
         //請求頭名稱
         repository.setHeaderName("setHeaderName");
@@ -104,11 +104,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 .logoutSuccessHandler(logoutSuccessHandler)
-                // 禁用session
+                // HttpSecurity禁用session
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                // 配置拦截规则
+                // HttpSecurity配置拦截规则
                 .and()
                 .authorizeRequests()
                 .antMatchers(URL_WHITELIST).permitAll()
@@ -118,10 +118,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling()
                 .authenticationEntryPoint(failureAuthEntryPoint)
                 .accessDeniedHandler(exceptionAccessDeniedHandler)
-                // 配置自定义的过滤器
+                // 配置自定义的过滤器,BasicAuthenticationFilter
                 .and()
                 .addFilter(nomalAuthenticationFilter())
-                .addFilterBefore(captchaFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(captchaFilter, UsernamePasswordAuthenticationFilter.class) //前置过滤器
         ;
 
     }
