@@ -1,9 +1,6 @@
 package com.aurora.ctoip.config;
 
-import com.aurora.ctoip.security.ExceptionAccessDeniedHandler;
-import com.aurora.ctoip.security.FailureAuthEntryPoint;
-import com.aurora.ctoip.security.MyCsrfTokenRepository;
-import com.aurora.ctoip.security.NomalAuthCoreFilter;
+import com.aurora.ctoip.security.*;
 import com.aurora.ctoip.security.login.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -17,6 +14,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfFilter;
 
 
 /**
@@ -86,16 +85,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return repository;
     }
 
+    @Bean
+    public MyCsrfFilter myCsrfFilter() {
+        return new MyCsrfFilter(csrfTokenRepository());
+    }
 
     //设置SpringSecurity处理的内容
     protected void configure(HttpSecurity http) throws Exception {
+        http.addFilterAfter(myCsrfFilter(), CsrfFilter.class);
         http.headers()
                 .xssProtection()
                 .xssProtectionEnabled(true)
                 .block(true);
         http.cors().and()
                 .csrf()
-                .csrfTokenRepository(csrfTokenRepository())
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 .and()
                 // 登录配置
                 .formLogin()
@@ -123,6 +127,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilter(nomalAuthenticationFilter())
                 .addFilterBefore(captchaFilter, UsernamePasswordAuthenticationFilter.class) //前置过滤器
         ;
-
     }
 }
