@@ -33,9 +33,10 @@
 ```
 
 ## 部署配置说明
-- `release/application.yml` 是容器模板配置，依赖 `${MYSQLIP}` 和 `${REDISIP}` 注入
-- Docker 镜像中会下载 jar 并以：
-  `java -jar ctoip.jar --spring.config.location=/usr/local/` 启动
+- Actions 镜像构建会使用仓库根目录 `application.yml` 作为运行配置模板
+- 生产环境通过容器环境变量覆盖配置（DB/Redis/JWT/API key）
+- 容器以内：
+  `java -jar /usr/local/ctoip.jar --spring.config.location=/usr/local/application.yml` 启动
 
 ## 当前已确认约定
 - JWT Header 为 `Authorization`
