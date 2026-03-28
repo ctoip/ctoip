@@ -12,7 +12,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /workspace/target/*.jar /usr/local/ctoip.jar
-COPY application.yml /usr/local/application.yml
+COPY --from=builder /workspace/src/main/resources/application-prod.yml /usr/local/application-prod.yml
 
 EXPOSE 8081
-CMD ["java", "-jar", "/usr/local/ctoip.jar", "--spring.config.location=/usr/local/application.yml"]
+CMD ["java", "-jar", "/usr/local/ctoip.jar", "--spring.config.location=/usr/local/application-prod.yml"]
